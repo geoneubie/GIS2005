@@ -1,7 +1,7 @@
-mapboxgl.accessToken = 'pk.eyJ1IjoiZ2VvbmV1YmllIiwiYSI6ImNrMXo3Z3JncjBibTQzZHBjNWlub2V2NXYifQ.YEuXWKArgCh0e2GIwjTZxw';
+mapboxgl.accessToken = 'pk.eyJ1IjoiZG5ldWZlbGQtZnJjYyIsImEiOiJjbTBmeDY4cDcxNHdhMmtvaXRmdjJqeDltIn0.TQpjFnvI8qiW1J5OEmGJIA';
 var map = new mapboxgl.Map({
-  container: 'map'
-  style: 'mapbox://styles/geoneubie/ck5yrp8iw0cd01iruxg6mqg48',
+  container: 'map',
+  style: 'mapbox://styles/dneufeld-frcc/cmezze56b011t01ssezwt9ial',
   center: [-105, 39.7], 
   zoom: 8
 });
