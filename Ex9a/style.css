@@ -1,0 +1,35 @@
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* This is a fixed size formatting approach on the header, footer, and body */
+.header,
+.footer {
+  position: absolute;
+  width: 1024px;
+  background: steelblue;
+  border: 1px;
+  margin: 0;
+  padding: 0;
+}
+
+.header {
+  height: 60px;
+  text-align: center;
+}
+
+.footer {
+  text-align: left;
+}
+
+.content-body {
+  background-color: forestgreen;
+  height: 600px;
+  width: 1024px;
+  min-height: 400px;
+  margin: 0;
+  padding: 0;
+}
