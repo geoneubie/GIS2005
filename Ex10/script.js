@@ -1,5 +1,6 @@
-// Add your fetch function here
+// Update the windfireJsonUrl to point to your geojson file in data/wildfire.json
 var wildfireJsonUrl = '';
+
 fetch(wildfireJsonUrl) // Load the wildfire geojson file from the data directory, use a relative path
     .then(res => res.json())
     .then((geojson) => { // Code executes after geojson has been loaded
@@ -8,12 +9,13 @@ fetch(wildfireJsonUrl) // Load the wildfire geojson file from the data directory
         
 }).catch(err => console.error(err));
 
+// Update the fireIconUrl to your images/fire.png
 var fireIconUrl = '';
 
 function updateMap(geojson){
   map.on('load', function() {
   map.loadImage(
-    fireIconUrl, // Add the fire.png from the images folder, use a relative path
+    fireIconUrl, 
     function(error, image) {
       if (error) throw error;
       map.addImage('fire', image);
