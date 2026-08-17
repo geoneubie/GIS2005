@@ -1,0 +1,53 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>ArcGIS Maps SDK for JavaScript Tutorials: Display a map</title>
+
+    <style>
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+      }
+    </style>
+
+
+
+    <!-- Load the ArcGIS Maps SDK for JavaScript from CDN -->
+    <script type="module" src="https://js.arcgis.com/5.1/"></script>
+
+  </head>
+
+
+  <body>
+
+    <arcgis-map item-id="a69f14ea2e784e019f4a4b6835ffd376" center="-104.95, 39.75" zoom="13">
+
+      <arcgis-zoom slot="top-left"></arcgis-zoom>
+
+    </arcgis-map>
+
+    <script type="module">
+
+        const viewElement = document.querySelector("arcgis-map");
+
+        const locString = window.location;
+        console.log("locString=" + locString);
+        const urlParams = new URLSearchParams(locString.search);
+        let resort = urlParams.get("resort");
+        console.log(resort);
+        if (resort=="winterpark") {
+            viewElement.goTo(
+                // go to point with a custom animation duration
+                { center: [-105.76, 39.89] },
+                { duration: 5000 },
+            );
+        }
+        viewElement.zoom = 15;
+
+    </script>
+
+  </body>
+
+</html>
