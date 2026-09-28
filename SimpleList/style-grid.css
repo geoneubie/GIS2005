@@ -1,13 +1,9 @@
-lists can have any number of items, hard-coding area names for every single `li` gets messy quickly. If you just want them to stack vertically like your old flexbox code, this cleaner version does the exact same thing without needing grid areas:
-
 ul {
   border: 1px solid red;
   list-style-type: none;
-  padding: 10px;
   margin: 10px;
-
+  padding: 20px;
   display: grid;
-  grid-template-columns: 1fr;
   gap: 20px;
 }
 
