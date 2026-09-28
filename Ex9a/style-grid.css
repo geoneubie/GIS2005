@@ -9,25 +9,26 @@ body {
   display: grid;
   /* Width removed so it defaults to 100% of the screen */
   grid-template-rows: 60px 1fr 60px; 
+    "header"
+    "content-body"
+    "footer";
 }
 
-.header,
+.header {
+  grid-area: header; /* Links this element to the row above */
+  text-align: center;
+}
 .footer {
+  grid-area: footer;
   background: steelblue;
   border: 1px solid black;
   margin: 0;
   padding: 0;
-}
-
-.header {
-  text-align: center;
-}
-
-.footer {
   text-align: left;
 }
 
 .content-body {
+  grid-area: content-body;
   background-color: forestgreen;
   margin: 0;
   padding: 0;
