@@ -11,21 +11,8 @@ body {
   grid-template-rows: 60px 1fr 60px;
 }
 
-.header,
-.footer {
-  background: steelblue;
-  border: 1px solid black;
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
 .header {
   text-align: center;
-}
-
-.footer {
-  text-align: left;
 }
 
 .content-body {
@@ -33,4 +20,17 @@ body {
   margin: 0;
   padding: 0;
   overflow-y: auto;
+}
+
+.footer {
+  text-align: left;
+}
+
+.header,
+.footer {
+  background: steelblue;
+  border: 1px solid black;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
