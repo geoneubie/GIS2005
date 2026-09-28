@@ -18,6 +18,7 @@ body {
   grid-area: header; /* Links this element to the row above */
   text-align: center;
 }
+
 .footer {
   grid-area: footer;
   background: steelblue;
