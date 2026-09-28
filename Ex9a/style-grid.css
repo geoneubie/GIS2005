@@ -5,34 +5,32 @@ body {
   padding: 0;
 }
 
-container {
+.container {
   display: grid;
-  height: 100%;
-  /* Width removed so it defaults to 100% of the screen */
-  grid-template-rows: 60px 1fr 60px; 
-    "header"
-    "content-body"
-    "footer";
+  height: 100vh; /* Fills the entire browser viewport */
+  grid-template-rows: 60px 1fr 60px;
+}
+
+.header,
+.footer {
+  background: steelblue;
+  border: 1px solid black;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 .header {
-  grid-area: header; /* Links this element to the row above */
   text-align: center;
 }
 
 .footer {
-  grid-area: footer;
-  background: steelblue;
-  border: 1px solid black;
-  margin: 0;
-  padding: 0;
   text-align: left;
 }
 
 .content-body {
-  grid-area: content-body;
   background-color: forestgreen;
   margin: 0;
   padding: 0;
-  overflow-y: auto; 
+  overflow-y: auto;
 }
