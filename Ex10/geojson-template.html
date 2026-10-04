@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>GeoJSONLayer using ArcGIS Maps SDK for JavaScript</title>
+
+    <!-- Load the ArcGIS Maps SDK for JavaScript from CDN -->
+    <script type="module" src="https://js.arcgis.com/5.1/"></script>
+
+    <style>
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+      }
+    </style>
+  </head>
+
+  <body>
+    <arcgis-map basemap="gray-vector" center="-105.27,40" zoom="10">
+      <arcgis-popup slot="popup"></arcgis-popup>
+      <arcgis-zoom slot="top-left"></arcgis-zoom>
+      <arcgis-scale-bar slot="bottom-left"></arcgis-scale-bar>
+    </arcgis-map>
+    
+    <script type="module">
+      const GeoJSONLayer = await $arcgis.import("@arcgis/core/layers/GeoJSONLayer.js");
+      const PictureMarkerSymbol = await $arcgis.import("@arcgis/core/symbols/PictureMarkerSymbol.js");
+
+      // Paste the url into a browser's address bar to download and view the attributes
+      // in the GeoJSON file. These attributes include:
+      const template = {
+        title: "#TBD",
+        content: "#TBD",
+      };
+
+      let myIcon = {
+        url: "#TBD",
+        width: "32px",
+        height: "32px"
+      };
+      
+      const SimpleRenderer = await $arcgis.import("@arcgis/core/renderers/SimpleRenderer.js");
+      const myRenderer = new SimpleRenderer({
+        symbol: new PictureMarkerSymbol(myIcon)
+      });
+      // Point to the URL location, and set up layer properties.
+      const layer = new GeoJSONLayer({
+        url: "#TBD",
+        copyright: "#TBD",
+        popupTemplate: template,
+        renderer: myRenderer
+      });
+      // Get a reference to the Map component element.
+      const viewElement = document.querySelector("arcgis-map");
+      await viewElement.viewOnReady();
+      viewElement.map.add(layer);
+    </script>
+  </body>
+</html>
