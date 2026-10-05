@@ -1,36 +1,18 @@
-html,
-body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-}
-
-.container {
-  display: grid;
-  height: 100vh; /* Fills the entire browser viewport */
-  grid-template-rows: 60px 1fr 60px;
-}
-
-.header {
-  text-align: center;
-}
-
-.content-body {
-  background-color: forestgreen;
-  margin: 0;
-  padding: 0;
-  overflow-y: auto;
-}
-
-.footer {
-  text-align: left;
-}
-
-.header,
-.footer {
-  background: steelblue;
-  border: 1px solid black;
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+<HTML>
+  <HEAD>
+    <link rel="stylesheet" href="grid-style.css">
+    <script type="module" src="https://js.arcgis.com/5.1/"></script>
+  </HEAD>
+  <BODY>
+    <DIV class="container">
+      <DIV class="header">
+        Header - 60px
+      </DIV>
+      <DIV class="content-body">
+      </DIV>
+      <DIV class="footer">
+        Footer - 60 px
+      </DIV>
+    </DIV>
+  </BODY>
+</HTML>
