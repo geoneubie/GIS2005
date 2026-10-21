@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <title>Query FeatureLayer by Bounding Box - 5.1</title>
+    <style>
+      html, body, #viewDiv {
+        padding: 0;
+        margin: 0;
+        height: 100%;
+        width: 100%;
+      }
+    </style>
+    <!-- Reference ArcGIS JS 5.1 -->
+
+  </head>
+  <body>
+    <!-- Add arcgis-map tag center="-119.9, 39.75" zoom="10" id="myMap" -->
+
+    <script type="module">
+    <!-- NEW: Import specific JS libraries we need for this analysis-->
+
+      <!-- Instantiate the objects we need -->
+      const map = new Map({
+        basemap: "topo-vector",
+      });
+      
+      const featureLayer = new FeatureLayer({
+        portalItem: {
+          id: "5d8937f717fa4570b158aea3cd1fdc0c", //US Cities layer item id
+        },
+        outFields: ["*"],
+      });
+
+      const viewElement = document.querySelector("arcgis-map");
+      // Get a reference to the popup component
+      viewElement.map = map;
+      await viewElement.viewOnReady();
+  
+
+
+      map.add(featureLayer);
+      const graphicsLayer = new GraphicsLayer();
+      map.add(graphicsLayer);
+      const view = viewElement.view;
+
+      viewElement.addEventListener("arcgisViewClick", (event) => {
+        
+        // Extract mapPoint from event.detail
+        const { mapPoint } = event.detail; 
+
+        const queryExtent = view.extent.clone();
+
+        const extentGraphic = new Graphic({
+          geometry: queryExtent,
+          symbol: {
+            type: "simple-fill",
+            color: [51, 51, 204, 0.2], 
+            style: "solid",
+            outline: { color: "blue", width: 2 }
+          }
+        });
+        graphicsLayer.add(extentGraphic);
+
+        const query = featureLayer.createQuery();
+        query.geometry = queryExtent;
+        query.spatialRelationship = ""; //intersects
+        query.returnGeometry = true;
+        query.outFields = []; //"CITY_NAME"
+        let names = "";
+        featureLayer.queryFeatures(query).then((results) => {
+          console.log("Found " + results.features.length + " cities within the bounding box.");
+          
+          results.features.forEach((feature) => {
+            feature.symbol = {
+              type: "simple-marker",
+              color: "red",
+              size: "10px",
+              outline: { color: "white", width: 1 }
+            };
+            graphicsLayer.add(feature);
+            // Access the attributes object of the feature
+            const attributes = feature.attributes;
+            const featureName = attributes["CITY_NAME"];
+            names = names + featureName + ", "
+            console.log("Feature name: " + featureName);
+          });
+          console.log("Names of features found " + names);
+          
+
+        }).catch((error) => {
+          console.error("Query failed: ", error);
+        });
+        
+
+      });
+
+
+    </script>
+</body>
+</html>
