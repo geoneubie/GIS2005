@@ -1,96 +1,124 @@
+<!DOCTYPE html>
 <HTML>
   <HEAD>
-    <link rel="stylesheet" href="TBD">
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="https://js.arcgis.com/5.1/esri/themes/light/main.css" />
     <script type="module" src="TBD"></script>
 
   </HEAD>
   <BODY>
     <div class="container">
-      <header><span class="lblPreview"><img src="TBD"  width="100%" height="100%" alt="Skyline"></span></header>
+      <header><img src="TBD" style="display: block; margin: 0 auto;" width="700px" height="125px" alt="Skyline"></header>
       <!-- HTML for left sidebar -->
+     <aside class="sidebar-l">
+       Layer Visibility
+       <div class="sidebar-l-top">
+         <arcgis-layer-list reference-element="myMap"></arcgis-layer-list>
+       </div>
+       Legend
+       <div class="sidebar-l-bottom">
+         <arcgis-legend reference-element="myMap"></arcgis-legend>
+       </div>
+     </aside>
       <main>
         <!-- Reference your web map id -->
-        <arcgis-map item-id="TBD" center="-104.95, 39.75" zoom="14" id="myMap">
+        <arcgis-map item-id="7ebc444f3093432a9e89610bb38ddd0d" center="-104.95, 39.75" zoom="14" id="myMap" popup-disabled>
           <arcgis-zoom slot="top-left"></arcgis-zoom>
         </arcgis-map>
       </main>
-      <!-- HTML for footer -->
-    </div>
-    <script type="module">
-      // Import specific JS libraries we need for this analysis
-      // Refer to slides 
+        <script type="module">
+        // Import specific JS libraries we need for this analysis
+        // Refer to slides 
+        // Add TBD
 
-      // Instantiate the objects we need
-      
-      const featureLayer = new FeatureLayer({
-        portalItem: {
-          // Look up your item id for the Denver Grocery Stores layer in your ArcGIS Online content and replace the TBD below with that id
-          id: "TBD", //Denver Grocery Stores layer item id
-        },
-        outFields: ["*"],
-      });
-
-      const viewElement = document.querySelector("arcgis-map");
-      await viewElement.viewOnReady();
-      const map = viewElement.map;
-
-      map.add(featureLayer);
-      const graphicsLayer = new GraphicsLayer();
-      map.add(graphicsLayer);
-      const view = viewElement.view;
-
-      viewElement.addEventListener("arcgisViewClick", (event) => {
+        // Instantiate the objects we need
         
-        // Extract mapPoint from event.detail
-        const { mapPoint } = event.detail; 
+        const featureLayer = new FeatureLayer({
+            portalItem: {
+            // Look up your item id for the Denver Grocery Stores layer in your ArcGIS Online content and replace the TBD below with that id
+            id: "TBD", //Denver Grocery Stores layer item id
+            },
+            outFields: ["*"],
+        });
 
-        const queryExtent = view.extent.clone();
+        const viewElement = document.querySelector("arcgis-map");
+        await viewElement.viewOnReady();
+        const map = viewElement.map;
 
-        const extentGraphic = new Graphic({
-          geometry: queryExtent,
+        // 1. Define a renderer for how the graphics should look
+        // (This is required for the legend to know what symbol to draw)
+        const highlightRenderer = {
+          type: "simple",
           symbol: {
-            type: "simple-fill",
-            color: [51, 51, 204, 0.2], 
-            style: "solid",
-            outline: { color: "yellow", width: 2 }
+            type: "simple-marker",
+            color: "red",
+            size: "10px",
+            outline: { color: "white", width: 1 }
           }
+        };
+
+        // 2. Create the client-side FeatureLayer
+        const graphicsLayer = new FeatureLayer({
+          title: "Highlighted Stores", // <--- THIS is the name that appears in the Legend
+          source: [], // Start with an empty array of graphics
+          objectIdField: "OBJECTID",
+          fields: [{
+            name: "OBJECTID",
+            type: "oid"
+          }],
+          geometryType: "point",
+          renderer: highlightRenderer
         });
-        graphicsLayer.add(extentGraphic);
 
-        const query = featureLayer.createQuery();
-        query.geometry = queryExtent;
-        query.spatialRelationship = "TBD"; //intersects
-        query.returnGeometry = true;
-        query.outFields = ["TBD"]; // The store name field in the food stores layer
-        let names = "";
-        featureLayer.queryFeatures(query).then((results) => {
-          console.log("Found " + results.features.length + " stores within the bounding box.");
-          
-          results.features.forEach((feature) => {
-            feature.symbol = {
-              type: "simple-marker",
-              color: "TBD", // The color of the marker
-              size: "10px",
-              outline: { color: "white", width: 1 }
-            };
-            graphicsLayer.add(feature);
-            // Access the attributes object of the feature
-            const attributes = feature.attributes;
-            const featureName = attributes["TBD"];
-            names = names + featureName + ", "
-            console.log("Feature name: " + featureName);
-          });
-          console.log("Names of features found " + names);
-          
+        map.add(graphicsLayer);
+        const view = viewElement.view;
 
-        }).catch((error) => {
-          console.error("Query failed: ", error);
+        viewElement.addEventListener("arcgisViewClick", (event) => {
+            
+            // Extract mapPoint from event.detail
+            const { mapPoint } = event.detail; 
+
+            const queryExtent = view.extent.clone();
+
+            const query = featureLayer.createQuery();
+            query.geometry = queryExtent;
+            query.spatialRelationship = "TBD"; //intersects
+            query.returnGeometry = true;
+            query.outFields = ["TBD"]; // The store name field in the food stores layer
+            let names = "";
+            featureLayer.queryFeatures(query).then((results) => {
+            console.log("Found " + results.features.length + " stores within the bounding box.");
+            
+            results.features.forEach((feature) => {
+
+              // 1. Give each feature an OBJECTID so the FeatureLayer can track them
+              feature.attributes.OBJECTID = feature.attributes.OBJECTID || Math.floor(Math.random() * 1000000);
+
+
+              // 2. Use applyEdits to push the graphics to the layer (DO NOT update .source)
+              graphicsLayer.applyEdits({
+                addFeatures: results.features
+              });
+              // Access the attributes object of the feature
+              const attributes = feature.attributes;
+              const featureName = attributes["TBD"];
+              names = names + featureName + ", "
+              console.log("Feature name: " + featureName);
+            });
+            console.log("Names of features found " + names);
+            
+
+            }).catch((error) => {
+              console.error("Query failed: ", error);
+            });
+            
+
         });
-        
-
-      });
 
 
-    </script>   
-  </BODY>
+        </script>
+        <!-- HTML for footer -->   
+        <footer><span class="lblPreview">Footer</span></footer>   
+    </div>
+    </BODY>
 </HTML>
